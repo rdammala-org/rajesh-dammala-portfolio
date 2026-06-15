@@ -26,6 +26,24 @@
             --gradient-1: linear-gradient(135deg, #0f62fe 0%, #00d4aa 100%);
             --gradient-2: linear-gradient(135deg, #6e40c9 0%, #f78166 100%);
             --shadow: 0 8px 32px rgba(0,0,0,0.3);
+            --nav-bg: rgba(13, 17, 23, 0.85);
+        }
+
+        [data-theme="light"] {
+            --primary: #0f62fe;
+            --primary-dark: #0043ce;
+            --accent: #009e7f;
+            --bg-dark: #f6f8fa;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f2f5;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555570;
+            --text-muted: #6e7681;
+            --border: #d8dce5;
+            --gradient-1: linear-gradient(135deg, #0f62fe 0%, #009e7f 100%);
+            --gradient-2: linear-gradient(135deg, #6e40c9 0%, #f78166 100%);
+            --shadow: 0 8px 32px rgba(0,0,0,0.08);
+            --nav-bg: rgba(246, 248, 250, 0.92);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -42,7 +60,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(13, 17, 23, 0.85);
+            background: var(--nav-bg);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
@@ -71,6 +89,45 @@
             transition: color 0.2s;
         }
         nav .nav-links a:hover { color: var(--accent); }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            line-height: 1;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.9rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .download-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(15, 98, 254, 0.4);
+        }
 
         /* Hero Section */
         .hero {
@@ -466,7 +523,18 @@
             nav .nav-links a { margin-left: 0.75rem; font-size: 0.8rem; }
             .timeline { padding-left: 1.5rem; }
             .timeline-item { padding-left: 1.5rem; }
+            .download-btn span { display: none; }
         }
+
+        /* Light mode overrides */
+        [data-theme="light"] .hero::before {
+            background: radial-gradient(circle, rgba(15, 98, 254, 0.08) 0%, transparent 70%);
+        }
+        [data-theme="light"] .hero::after {
+            background: radial-gradient(circle, rgba(0, 158, 127, 0.06) 0%, transparent 70%);
+        }
+        [data-theme="light"] .timeline-item::before { border-color: #f6f8fa; }
+        [data-theme="light"] .timeline-item.current::before { box-shadow: 0 0 12px rgba(0, 158, 127, 0.4); }
     </style>
 </head>
 <body>
@@ -482,6 +550,10 @@
                 <a href="#projects">Projects</a>
                 <a href="#roles">Target Roles</a>
                 <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <a href="resume.html" target="_blank" class="download-btn">📄 Resume</a>
+                <button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode">🌙</button>
             </div>
         </div>
     </nav>
@@ -645,6 +717,7 @@
                         <span class="skill-tag">CI/CD Pipelines</span>
                         <span class="skill-tag">YAML</span>
                         <span class="skill-tag">ARM/Bicep</span>
+                        <span class="skill-tag">SCRUM (Agile)</span>
                         <span class="skill-tag">Deployments</span>
                     </div>
                 </div>
@@ -1015,5 +1088,45 @@
         <p>© 2026 Rajesh Dammala. Built with passion and purpose. 🙏</p>
         <p style="margin-top: 0.5rem; font-size: 0.8rem;">Morrisville, NC | Open to Remote, Hybrid, or Relocation</p>
     </footer>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            html.setAttribute('data-theme', 'light');
+            themeToggle.textContent = '☀️';
+        }
+        themeToggle.addEventListener('click', () => {
+            const isLight = html.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                html.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.skill-card, .timeline-item, .achievement-card, .project-card, .role-chip, .cert-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
