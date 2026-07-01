@@ -2,7 +2,7 @@
 
 > **Senior Technical Services Engineer | SRE Program Lead | Escalation & Incident Management Leader**
 
-🌐 [Live Portfolio](https://rdammala.github.io/rajesh-dammala-portfolio/) | 📧 rajesh.dammala@gmail.com | 📍 Raleigh-Durham, NC | [LinkedIn](https://linkedin.com/in/rajesh-dammala)
+🌐 [Live Portfolio](https://rdammala-org.github.io/rajesh-dammala-portfolio/) | 📧 rajesh.dammala@gmail.com | 📍 Raleigh-Durham, NC | [LinkedIn](https://linkedin.com/in/rajesh-dammala)
 
 ---
 
